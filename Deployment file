@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-static-website
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-static-website
+  template:
+    metadata:
+      labels:
+        app: nginx-static-website
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: static-content
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: static-content
+        configMap:
+          name: static-content-configmap
